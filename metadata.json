@@ -1,0 +1,6 @@
+{
+  "name": "X Vault",
+  "description": "Trading Card Store Management & POS System",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
