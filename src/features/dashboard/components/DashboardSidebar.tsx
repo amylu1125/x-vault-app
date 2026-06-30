@@ -1,28 +1,32 @@
 import React from 'react';
-import { NavScreen } from '../types';
-import { 
-  LayoutDashboard, 
-  Package, 
-  ShoppingCart, 
-  ArrowLeftRight, 
-  Users, 
-  FileSpreadsheet, 
-  Bot, 
-  Plug, 
-  History, 
-  ScanLine, 
-  Settings, 
-  Store 
+import {
+  LayoutDashboard,
+  Package,
+  ShoppingCart,
+  ArrowLeftRight,
+  Users,
+  FileSpreadsheet,
+  Bot,
+  Plug,
+  History,
+  ScanLine,
+  Settings,
+  Store,
 } from 'lucide-react';
-import { CURRENT_USER } from '../data';
+import { CURRENT_USER } from '../../../data';
+import type { NavScreen } from '../../../types';
 
-interface SidebarProps {
+interface DashboardSidebarProps {
   activeScreen: NavScreen;
   onScreenChange: (screen: NavScreen) => void;
   activeCompanyName: string;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ activeScreen, onScreenChange, activeCompanyName }) => {
+export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
+  activeScreen,
+  onScreenChange,
+  activeCompanyName,
+}) => {
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'inventory', label: 'Inventory OS', icon: Package },
@@ -44,7 +48,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeScreen, onScreenChange, 
           <Store className="w-5 h-5" />
         </div>
         <div className="min-w-0">
-          <h1 className="font-['Geist'] text-lg font-extrabold text-[#0525bb] tracking-tight leading-none truncate" title={activeCompanyName}>
+          <h1
+            className="font-['Geist'] text-lg font-extrabold text-[#0525bb] tracking-tight leading-none truncate"
+            title={activeCompanyName}
+          >
             {activeCompanyName}
           </h1>
           <p className="text-[10px] font-bold text-[#444655] uppercase tracking-widest mt-1 truncate">TCG Store OS v3.0</p>
@@ -67,14 +74,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeScreen, onScreenChange, 
               }`}
             >
               <div className="flex items-center gap-3 min-w-0">
-                <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-[#0525bb] group-hover:scale-110'} transition-transform`} />
+                <Icon
+                  className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-[#0525bb] group-hover:scale-110'} transition-transform`}
+                />
                 <span className="truncate">{item.label}</span>
               </div>
 
               {'isBadge' in item && item.isBadge && (
-                <span className={`text-[9px] font-bold font-['Geist'] uppercase tracking-wider px-1.5 py-0.5 rounded shrink-0 ${
-                  isActive ? 'bg-white/20 text-white' : 'bg-[#0525bb]/10 text-[#0525bb]'
-                }`}>
+                <span
+                  className={`text-[9px] font-bold font-['Geist'] uppercase tracking-wider px-1.5 py-0.5 rounded shrink-0 ${
+                    isActive ? 'bg-white/20 text-white' : 'bg-[#0525bb]/10 text-[#0525bb]'
+                  }`}
+                >
                   {item.isBadge}
                 </span>
               )}
@@ -98,7 +109,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeScreen, onScreenChange, 
               </span>
             </div>
           </div>
-          <button 
+          <button
             onClick={() => onScreenChange('settings')}
             className="w-full py-1.5 text-[11px] font-['Geist'] font-bold uppercase tracking-wider border border-[#0525bb] text-[#0525bb] bg-white rounded-lg hover:bg-[#0525bb] hover:text-white transition-colors flex items-center justify-center gap-1.5"
           >

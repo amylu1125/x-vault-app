@@ -1,27 +1,28 @@
 import React from 'react';
-import { MapPin, ChevronDown, Search, Bell, Building2 } from 'lucide-react';
-import { TenantCompany, EmployeeUser } from '../types';
+import { MapPin, ChevronDown, Search, Bell, Building2, LogOut } from 'lucide-react';
+import { TENANT_COMPANIES, CURRENT_USER } from '../../../data';
+import type { TenantCompany } from '../../../types';
 
-interface NavbarProps {
+interface DashboardHeaderProps {
   activeCompany: TenantCompany;
   onCompanyChange: (comp: TenantCompany) => void;
-  companies: TenantCompany[];
   activeLocation: string;
   onLocationChange: (loc: string) => void;
   searchQuery: string;
   onSearchChange: (q: string) => void;
-  currentUser: EmployeeUser;
+  authEmail?: string | null;
+  onSignOut?: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({
+export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   activeCompany,
   onCompanyChange,
-  companies,
   activeLocation,
   onLocationChange,
   searchQuery,
   onSearchChange,
-  currentUser,
+  authEmail,
+  onSignOut,
 }) => {
   const [showLocDropdown, setShowLocDropdown] = React.useState(false);
   const [showCompDropdown, setShowCompDropdown] = React.useState(false);
@@ -29,7 +30,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <header className="fixed top-0 w-full z-50 md:pl-[240px] h-16 bg-[#eff4ff] border-b border-[#c5c5d7] flex items-center justify-between px-4 md:px-8 shadow-xs select-none">
       <div className="flex items-center gap-3">
-        {/* Company Selector */}
         <div className="relative">
           <button
             onClick={() => setShowCompDropdown(!showCompDropdown)}
@@ -48,7 +48,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <div className="px-3 py-1 text-[10px] font-bold text-[#757686] uppercase tracking-wider font-['Geist']">
                 Switch Tenant Company Data
               </div>
-              {companies.map((c) => (
+              {TENANT_COMPANIES.map((c) => (
                 <button
                   key={c.id}
                   onClick={() => {
@@ -71,7 +71,6 @@ export const Navbar: React.FC<NavbarProps> = ({
           )}
         </div>
 
-        {/* Location Selector */}
         <div className="relative">
           <div
             onClick={() => setShowLocDropdown(!showLocDropdown)}
@@ -110,7 +109,6 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {/* Center Search */}
       <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 bg-[#dce9ff] border border-[#c5c5d7]/60 rounded-full text-[#444655] focus-within:ring-2 focus-within:ring-[#0525bb] focus-within:bg-white transition-all w-72 xl:w-96">
         <Search className="w-4 h-4 text-[#757686] shrink-0" />
         <input
@@ -122,9 +120,8 @@ export const Navbar: React.FC<NavbarProps> = ({
         />
       </div>
 
-      {/* Right User & Notifications */}
       <div className="flex items-center gap-3">
-        <button 
+        <button
           onClick={() => alert('All hardware OCR scanners and sync feeds active.')}
           className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-[#d3e4fe] text-[#444655] hover:text-[#0525bb] transition-colors relative"
         >
@@ -133,11 +130,23 @@ export const Navbar: React.FC<NavbarProps> = ({
         </button>
 
         <div className="flex items-center gap-2 pl-2 border-l border-[#c5c5d7]">
-          <img src={currentUser.avatarUrl} alt={currentUser.name} className="w-8 h-8 rounded-full border object-cover bg-white shrink-0" />
+          <img src={CURRENT_USER.avatarUrl} alt={CURRENT_USER.name} className="w-8 h-8 rounded-full border object-cover bg-white shrink-0" />
           <div className="hidden xl:block text-left">
-            <p className="text-xs font-bold leading-none font-['Geist'] truncate max-w-[100px]">{currentUser.name}</p>
-            <p className="text-[10px] text-[#0525bb] font-semibold">{currentUser.role} Role</p>
+            <p className="text-xs font-bold leading-none font-['Geist'] truncate max-w-[100px]">{CURRENT_USER.name}</p>
+            <p className="text-[10px] text-[#0525bb] font-semibold truncate max-w-[120px]">
+              {authEmail ?? `${CURRENT_USER.role} Role`}
+            </p>
           </div>
+          {onSignOut && (
+            <button
+              type="button"
+              onClick={onSignOut}
+              title="Sign out"
+              className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-[#d3e4fe] text-[#444655] hover:text-[#0525bb] transition-colors"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
+          )}
         </div>
       </div>
     </header>
